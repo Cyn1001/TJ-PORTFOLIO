@@ -1,19 +1,24 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 
 // --- CONFIGURATION ---
 const CONFIG = {
-    glitchIntensity: 0.05,
-    particleCount: 3000,
-    accentColor: 0xbc0000,
-    baseColor: 0x444444,
-    cameraStart: 1000,
-    cameraEnd: 200
+  glitchIntensity: 0.05,
+  particleCount: 3000,
+  accentColor: 0xbc0000,
+  baseColor: 0x444444,
+  cameraStart: 1000,
+  cameraEnd: 200,
 };
 
 // --- THREE.JS SETUP ---
-const container = document.getElementById('canvas-container');
+const container = document.getElementById("canvas-container");
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  2000,
+);
 const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -25,20 +30,23 @@ const geometry = new THREE.BufferGeometry();
 const vertices = [];
 const originalY = [];
 for (let i = 0; i < CONFIG.particleCount; i++) {
-    const x = THREE.MathUtils.randFloatSpread(1500);
-    const y = THREE.MathUtils.randFloatSpread(1500);
-    const z = THREE.MathUtils.randFloatSpread(2000);
-    vertices.push(x, y, z);
-    originalY.push(y);
+  const x = THREE.MathUtils.randFloatSpread(1500);
+  const y = THREE.MathUtils.randFloatSpread(1500);
+  const z = THREE.MathUtils.randFloatSpread(2000);
+  vertices.push(x, y, z);
+  originalY.push(y);
 }
-geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+geometry.setAttribute(
+  "position",
+  new THREE.Float32BufferAttribute(vertices, 3),
+);
 
 const material = new THREE.PointsMaterial({
-    color: CONFIG.baseColor,
-    size: 2,
-    transparent: true,
-    opacity: 0.6,
-    blending: THREE.AdditiveBlending
+  color: CONFIG.baseColor,
+  size: 2,
+  transparent: true,
+  opacity: 0.6,
+  blending: THREE.AdditiveBlending,
 });
 
 const points = new THREE.Points(geometry, material);
@@ -53,230 +61,248 @@ let scrollPercent = 0;
 let targetCameraZ = CONFIG.cameraStart;
 
 // Listeners
-window.addEventListener('mousemove', (e) => {
-    mouseX = (e.clientX - window.innerWidth / 2) / window.innerWidth;
-    mouseY = (e.clientY - window.innerHeight / 2) / window.innerHeight;
+window.addEventListener("mousemove", (e) => {
+  mouseX = (e.clientX - window.innerWidth / 2) / window.innerWidth;
+  mouseY = (e.clientY - window.innerHeight / 2) / window.innerHeight;
 });
 
-window.addEventListener('scroll', () => {
-    const h = document.documentElement;
-    const b = document.body;
-    const st = 'scrollTop';
-    const sh = 'scrollHeight';
-    
-    // Scroll progress percentage
-    const maxScroll = ((h[sh] || b[sh]) - h.clientHeight) || 1;
-    scrollPercent = (h[st] || b[st]) / maxScroll;
-    
-    // Update progress bar
-    const progressBar = document.getElementById('scroll-progress-bar');
-    if (progressBar) {
-        progressBar.style.width = (scrollPercent * 100) + '%';
-    }
+window.addEventListener("scroll", () => {
+  const h = document.documentElement;
+  const b = document.body;
+  const st = "scrollTop";
+  const sh = "scrollHeight";
 
-    // Show/hide back to top button with fade
-    const backToTop = document.getElementById('back-to-top');
-    if (backToTop) {
-        if ((h[st] || b[st]) > 800) {
-            backToTop.classList.add('visible');
-        } else {
-            backToTop.classList.remove('visible');
-        }
-    }
+  // Scroll progress percentage
+  const maxScroll = (h[sh] || b[sh]) - h.clientHeight || 1;
+  scrollPercent = (h[st] || b[st]) / maxScroll;
 
-    targetCameraZ = CONFIG.cameraStart - (scrollPercent * (CONFIG.cameraStart - CONFIG.cameraEnd));
+  // Update progress bar
+  const progressBar = document.getElementById("scroll-progress-bar");
+  if (progressBar) {
+    progressBar.style.width = scrollPercent * 100 + "%";
+  }
+
+  // Show/hide back to top button with fade
+  const backToTop = document.getElementById("back-to-top");
+  if (backToTop) {
+    if ((h[st] || b[st]) > 800) {
+      backToTop.classList.add("visible");
+    } else {
+      backToTop.classList.remove("visible");
+    }
+  }
+
+  targetCameraZ =
+    CONFIG.cameraStart -
+    scrollPercent * (CONFIG.cameraStart - CONFIG.cameraEnd);
 });
 
 // --- UI INITIALIZATION ---
 function initUI() {
-    // Timer Clock
-    const timerEl = document.querySelector('.timer');
-    if (timerEl) {
-        setInterval(() => {
-            const now = new Date();
-            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
-                            now.getMinutes().toString().padStart(2, '0') + ':' + 
-                            now.getSeconds().toString().padStart(2, '0') + ':' + 
-                            now.getMilliseconds().toString().padStart(3, '0');
-            timerEl.innerText = timeStr;
-        }, 10);
-    }
+  // Timer Clock
+  const timerEl = document.querySelector(".timer");
+  if (timerEl) {
+    setInterval(() => {
+      const now = new Date();
+      const timeStr =
+        now.getHours().toString().padStart(2, "0") +
+        ":" +
+        now.getMinutes().toString().padStart(2, "0") +
+        ":" +
+        now.getSeconds().toString().padStart(2, "0") +
+        ":" +
+        now.getMilliseconds().toString().padStart(3, "0");
+      timerEl.innerText = timeStr;
+    }, 10);
+  }
 
-    // Intersection Observer for Section Reveals
-    const observerOptions = { threshold: 0.1 };
-    const sectionObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                const tw = entry.target.querySelector('.typewriter');
-                if (tw && !tw.classList.contains('typed')) {
-                    startTypewriter(tw);
-                }
-            }
-        });
-    }, observerOptions);
+  // Intersection Observer for Section Reveals
+  const observerOptions = { threshold: 0.1 };
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        const tw = entry.target.querySelector(".typewriter");
+        if (tw && !tw.classList.contains("typed")) {
+          startTypewriter(tw);
+        }
+      }
+    });
+  }, observerOptions);
 
-    document.querySelectorAll('.mission-section').forEach(section => {
-        sectionObserver.observe(section);
+  document.querySelectorAll(".mission-section").forEach((section) => {
+    sectionObserver.observe(section);
+  });
+
+  // --- LIGHTBOX CAROUSEL LOGIC ---
+  const galleryItems = document.querySelectorAll(".gallery-item");
+  const images = Array.from(document.querySelectorAll(".gallery-item img"));
+  const modal = document.getElementById("lightbox-modal");
+  const modalImg = document.getElementById("lightbox-img");
+  const closeButton = document.querySelector(".close-modal");
+  const prevButton = document.getElementById("prev-btn");
+  const nextButton = document.getElementById("next-btn");
+  let currentImgIndex = 0;
+
+  if (modal && modalImg && closeButton && prevButton && nextButton) {
+    galleryItems.forEach((item, index) => {
+      item.style.cursor = "zoom-in";
+      item.addEventListener("click", () => {
+        currentImgIndex = index;
+        openModal();
+      });
     });
 
-    // --- LIGHTBOX CAROUSEL LOGIC ---
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    const images = Array.from(document.querySelectorAll('.gallery-item img'));
-    const modal = document.getElementById('lightbox-modal');
-    const modalImg = document.getElementById('lightbox-img');
-    const closeButton = document.querySelector('.close-modal');
-    const prevButton = document.getElementById('prev-btn');
-    const nextButton = document.getElementById('next-btn');
-    let currentImgIndex = 0;
-
-    if (modal && modalImg && closeButton && prevButton && nextButton) {
-        galleryItems.forEach((item, index) => {
-            item.style.cursor = 'zoom-in';
-            item.addEventListener('click', () => {
-                currentImgIndex = index;
-                openModal();
-            });
-        });
-
-        function openModal() {
-            modal.style.display = 'flex';
-            modal.setAttribute('aria-hidden', 'false');
-            updateModalImage();
-            document.body.style.overflow = 'hidden';
-        }
-
-        function updateModalImage() {
-            if (images[currentImgIndex]) {
-                modalImg.classList.add('fade-out');
-                setTimeout(() => {
-                    modalImg.src = images[currentImgIndex].src;
-                    modalImg.alt = images[currentImgIndex].alt;
-                    modalImg.classList.remove('fade-out');
-                }, 200);
-            }
-        }
-
-        function closeModal() {
-            modal.style.display = 'none';
-            modal.setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = 'auto';
-        }
-
-        closeButton.addEventListener('click', closeModal);
-        closeButton.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                closeModal();
-            }
-        });
-
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
-        });
-
-        prevButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            currentImgIndex = (currentImgIndex - 1 + images.length) % images.length;
-            updateModalImage();
-        });
-
-        nextButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            currentImgIndex = (currentImgIndex + 1) % images.length;
-            updateModalImage();
-        });
-
-        window.addEventListener('keydown', (e) => {
-            if (modal.style.display === 'flex') {
-                if (e.key === 'ArrowLeft') prevButton.click();
-                if (e.key === 'ArrowRight') nextButton.click();
-                if (e.key === 'Escape') closeModal();
-            }
-        });
-
-        // Swipe support
-        let touchStartX = 0;
-        modal.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
-        modal.addEventListener('touchend', (e) => {
-            let touchEndX = e.changedTouches[0].screenX;
-            if (touchEndX < touchStartX - 50) nextButton.click();
-            if (touchEndX > touchStartX + 50) prevButton.click();
-        }, {passive: true});
+    function openModal() {
+      modal.style.display = "flex";
+      modal.setAttribute("aria-hidden", "false");
+      updateModalImage();
+      document.body.style.overflow = "hidden";
     }
 
-    // Back to top click
-    document.getElementById('back-to-top')?.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    function updateModalImage() {
+      if (images[currentImgIndex]) {
+        modalImg.classList.add("fade-out");
+        setTimeout(() => {
+          modalImg.src = images[currentImgIndex].src;
+          modalImg.alt = images[currentImgIndex].alt;
+          modalImg.classList.remove("fade-out");
+        }, 200);
+      }
+    }
+
+    function closeModal() {
+      modal.style.display = "none";
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "auto";
+    }
+
+    closeButton.addEventListener("click", closeModal);
+    closeButton.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        closeModal();
+      }
     });
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    prevButton.addEventListener("click", (e) => {
+      e.stopPropagation();
+      currentImgIndex = (currentImgIndex - 1 + images.length) % images.length;
+      updateModalImage();
+    });
+
+    nextButton.addEventListener("click", (e) => {
+      e.stopPropagation();
+      currentImgIndex = (currentImgIndex + 1) % images.length;
+      updateModalImage();
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (modal.style.display === "flex") {
+        if (e.key === "ArrowLeft") prevButton.click();
+        if (e.key === "ArrowRight") nextButton.click();
+        if (e.key === "Escape") closeModal();
+      }
+    });
+
+    // Swipe support
+    let touchStartX = 0;
+    modal.addEventListener(
+      "touchstart",
+      (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      },
+      { passive: true },
+    );
+    modal.addEventListener(
+      "touchend",
+      (e) => {
+        let touchEndX = e.changedTouches[0].screenX;
+        if (touchEndX < touchStartX - 50) nextButton.click();
+        if (touchEndX > touchStartX + 50) prevButton.click();
+      },
+      { passive: true },
+    );
+  }
+
+  // Back to top click
+  document.getElementById("back-to-top")?.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 }
 
 // Typewriter Effect Function
 function startTypewriter(el) {
-    el.classList.add('typed');
-    const text = el.textContent;
-    el.textContent = '';
-    el.dataset.text = '';
-    let i = 0;
-    function type() {
-        if (i < text.length) {
-            el.textContent += text.charAt(i);
-            el.dataset.text = el.textContent;
-            i++;
-            setTimeout(type, 30);
-        }
+  el.classList.add("typed");
+  const text = el.textContent;
+  el.textContent = "";
+  el.dataset.text = "";
+  let i = 0;
+  function type() {
+    if (i < text.length) {
+      el.textContent += text.charAt(i);
+      el.dataset.text = el.textContent;
+      i++;
+      setTimeout(type, 30);
     }
-    type();
+  }
+  type();
 }
 
 // Window Resize Handling
-window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
 // Start UI logic
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initUI);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initUI);
 } else {
-    initUI();
+  initUI();
 }
 
 // Animation Loop
 function animate() {
-    requestAnimationFrame(animate);
+  requestAnimationFrame(animate);
 
-    // Smooth camera movement
-    camera.position.z += (targetCameraZ - camera.position.z) * 0.05;
-    camera.position.x += (mouseX * 100 - camera.position.x) * 0.05;
-    camera.position.y += (-mouseY * 100 - camera.position.y) * 0.05;
-    camera.lookAt(0, 0, 0);
+  // Smooth camera movement
+  camera.position.z += (targetCameraZ - camera.position.z) * 0.05;
+  camera.position.x += (mouseX * 100 - camera.position.x) * 0.05;
+  camera.position.y += (-mouseY * 100 - camera.position.y) * 0.05;
+  camera.lookAt(0, 0, 0);
 
-    // Particle behavior
-    const positions = points.geometry.attributes.position.array;
-    for (let i = 0; i < CONFIG.particleCount; i++) {
-        const i3 = i * 3;
-        // Subtle wave effect based on scroll
-        positions[i3 + 1] = originalY[i] + Math.sin(Date.now() * 0.001 + i) * (10 + scrollPercent * 50);
-    }
-    points.geometry.attributes.position.needsUpdate = true;
-    points.rotation.y += 0.001 + scrollPercent * 0.005;
+  // Particle behavior
+  const positions = points.geometry.attributes.position.array;
+  for (let i = 0; i < CONFIG.particleCount; i++) {
+    const i3 = i * 3;
+    // Subtle wave effect based on scroll
+    positions[i3 + 1] =
+      originalY[i] +
+      Math.sin(Date.now() * 0.001 + i) * (10 + scrollPercent * 50);
+  }
+  points.geometry.attributes.position.needsUpdate = true;
+  points.rotation.y += 0.001 + scrollPercent * 0.005;
 
-    // Random Glitch Effect
-    if (Math.random() < CONFIG.glitchIntensity + (scrollPercent * 0.1)) {
-        points.position.x = THREE.MathUtils.randFloatSpread(5);
-        points.position.z = THREE.MathUtils.randFloatSpread(5);
-        material.color.setHex(CONFIG.accentColor);
-        material.size = 4;
-        setTimeout(() => {
-            points.position.set(0, 0, 0);
-            material.color.setHex(CONFIG.baseColor);
-            material.size = 2;
-        }, 50);
-    }
+  // Random Glitch Effect
+  if (Math.random() < CONFIG.glitchIntensity + scrollPercent * 0.1) {
+    points.position.x = THREE.MathUtils.randFloatSpread(5);
+    points.position.z = THREE.MathUtils.randFloatSpread(5);
+    material.color.setHex(CONFIG.accentColor);
+    material.size = 4;
+    setTimeout(() => {
+      points.position.set(0, 0, 0);
+      material.color.setHex(CONFIG.baseColor);
+      material.size = 2;
+    }, 50);
+  }
 
-    renderer.render(scene, camera);
+  renderer.render(scene, camera);
 }
 
 animate();
