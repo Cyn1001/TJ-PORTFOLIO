@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TJ:PORTFOLIO | DONNÉES DE MISSION</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
+    <link rel="icon" type="image/x-icon" href="favicon_io/favicon.ico">
+    <link rel="manifest" href="favicon_io/site.webmanifest">
+</head>
+
+<body class="horror-theme">
+    <!-- Barre de progression de scroll -->
+    <div id="scroll-progress-container">
+        <div id="scroll-progress-bar"></div>
+    </div>
+
+    <!-- Conteneur Canvas Three.js -->
+    <div id="canvas-container"></div>
+
+    <!-- Superpositions VHS/Glitch -->
+    <div class="vhs-overlay"></div>
+    <div class="noise-overlay"></div>
+
+    <!-- Navigation Latérale (Quick Access) -->
+    <nav class="side-nav">
+        <ul>
+            <li><a href="#bio" title="PROFIL_AGENT.DAT"><span>PROFIL</span></a></li>
+            <li><a href="#cv" title="DOSSIER_PERSONNEL.PDF"><span>DOSSIER</span></a></li>
+            <li><a href="#experience" title="EXPÉRIENCES.LOG"><span>RAPPORTS</span></a></li>
+            <li><a href="#skills" title="ARSENAL_TECHNIQUE.INF"><span>ARSENAL</span></a></li>
+            <li><a href="#extra" title="PROJETS_EXTRAS.LOG"><span>ARCHIVES</span></a></li>
+            <li><a href="#illustrations" title="ILLUSTRATIONS.DAT"><span>VISUELS</span></a></li>
+            <li><a href="#productions-video" title="RUSH_TRAILERS.MP4"><span>VIDÉOS</span></a></li>
+            <li><a href="#contact" title="CONTACTER_MOI.INF"><span>CONTACT</span></a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <div class="status-bar">
+            <span class="glitch-text" data-text="STATUT : OPÉRATIONNEL">STATUT : OPÉRATIONNEL</span>
+            <div class="header-contacts">
+                <a href="mailto:tyronejnobaptistejoseph@gmail.com" title="EMAIL"><img
+                        src="images/Contacts/Email_Logo_PNG.png" alt="Email" class="contact-icon"></a>
+                <a href="https://www.linkedin.com/in/tyrone-jno-baptiste-b31363178/" target="_blank"
+                    title="LINKEDIN"><img src="images/Contacts/LinkedIn_logo_initials.png.webp" alt="LinkedIn"
+                        class="contact-icon"></a>
+            </div>
+            <span class="timer">00:00:00:00</span>
+        </div>
+        <h1 class="main-title">SUJET : TYRONE JNO BAPTISTE</h1>
+    </header>
+
+    <main id="content-scroll">
+        <section id="bio" class="mission-section">
+            <h2 class="section-title">FICHIER : PROFIL_AGENT.DAT</h2>
+            <div class="content-box">
+                <p class="typewriter system-text glitch-loop" data-text="Initialisation... ACCÈS AUTORISÉ.">
+                    Initialisation... ACCÈS AUTORISÉ.</p>
+                <p>Bienvenue dans les archives de mission. Je suis un <strong>Concepteur Plurimédia & Digital</strong>
+                    spécialisé dans le design graphique, l'audiovisuel et le développement web.</p>
+                <p><span class="system-text glitch-loop"
+                        data-text="Analyse des données de terrain... Objectif actuel : ">Analyse des données de
+                        terrain... Objectif actuel : </span> Créer des expériences numériques immersives avec un intérêt
+                    marqué pour l'industrie du jeu vidéo.</p>
+            </div>
+        </section>
+
+        <section id="cv" class="mission-section">
+            <h2 class="section-title">FICHIER : DOSSIER_PERSONNEL.PDF</h2>
+            <div class="content-box">
+                <p>Consulter les états de service complets et les qualifications détaillées de l'agent.</p>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+                    <a href="CV_ALTERNANCE (1).pdf" class="btn" target="_blank">VOIR_MON_CV</a>
+                    <a href="CV_ALTERNANCE (1).pdf" class="btn"
+                        download="CV_Tyrone_Jno_Baptiste.pdf">TÉLÉCHARGER_MON_CV</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience" class="mission-section">
+            <h2 class="section-title">FICHIER : RAPPORTS_DE_TERRAIN.LOG</h2>
+            <div class="grid-container">
+                <div class="project-item card logo-experience-pangee">
+                    <div class="experience-image">
+                        <img src="images/experiences/pangee_ong.png" alt="Pangee ONG Experience">
+                    </div>
+                    <h3>OPÉRATION : INFOGRAPHIE & MONTAGE VIDÉO</h3>
+                    <p>Briefing : Stage chez Pangee ONG. Identité visuelle événementielle (Festival de Cannes) et
+                        production de teasers vidéo.</p>
+                </div>
+                <div class="project-item card logo-experience-gameplay">
+                    <div class="experience-image">
+                        <img src="images/experiences/GameplayUXUI.png" alt="Gameplay UX/UI Experience">
+                    </div>
+                    <h3>OPÉRATION : GAMEPLAY & UX/UI</h3>
+                    <p>Briefing : Développement de mécaniques et prototypage d'interfaces pour un projet de jeu mobile
+                        (IUT Sénart).</p>
+                </div>
+                <div class="project-item card">
+                    <div class="experience-image">
+                        <img src="images/experiences/Application_web.png" alt="Application Web Experience">
+                    </div>
+                    <h3>OPÉRATION : FULL STACK / UI</h3>
+                    <p>Briefing : Développement d'une application web avec Symfony. Gestion du back-end et de l'identité
+                        visuelle.</p>
+                </div>
+                <div class="project-item card">
+                    <div class="experience-image">
+                        <img src="images/experiences/studio_grande_armee.jpg" alt="Studio Grande Armée Experience">
+                    </div>
+                    <h3>OPÉRATION : ASSISTANT PRODUCTION AUDIOVISUELLE</h3>
+                    <p>Briefing : Assistance technique en studio. Création de contenus promotionnels.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="mission-section">
+            <h2 class="section-title">FICHIER : ARSENAL_TECHNIQUE.INF</h2>
+            <div class="content-box">
+                <p>Capacités détectées :</p>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <strong>DESIGN & VIDÉO :</strong>
+                        <div class="logo-group">
+                            <img src="images/logos/Adobe_After_Effects_CC_icon.svg.png" title="After Effects"
+                                alt="After Effects">
+                            <img src="images/logos/Adobe_Premiere_Pro_CC_icon.svg.png" title="Premiere Pro"
+                                alt="Premiere Pro">
+                            <img src="images/logos/Adobe_Illustrator_CC_icon.svg.png" title="Illustrator"
+                                alt="Illustrator">
+                            <img src="images/logos/Adobe_Photoshop_CC_icon.svg.png" title="Photoshop" alt="Photoshop">
+                            <img src="images/logos/Adobe_InDesign_CC_icon.svg.png" title="InDesign" alt="InDesign">
+                            <img src="images/logos/Figma-logo.svg.png" title="Figma" alt="Figma">
+                            <img src="images/logos/flutterflow_logo.png" title="FlutterFlow" alt="FlutterFlow">
+                        </div>
+                        <p>After Effects, Premiere Pro, Illustrator, Photoshop, InDesign, Figma, FlutterFlow</p>
+                    </div>
+                    <div class="skill-category">
+                        <strong>GAME DEV & 3D :</strong>
+                        <div class="logo-group">
+                            <img src="images/logos/Unreal_Engine_Logo_(new_typeface).svg.png" title="Unreal Engine"
+                                alt="Unreal Engine" class="invert-bright ue-logo">
+                            <img src="images/logos/Unity_Technologies_logo.svg.png" title="Unity" alt="Unity"
+                                class="invert-bright">
+                            <img src="images/logos/Logo_Blender.svg.png" title="Blender" alt="Blender">
+                            <img src="images/logos/Autodesk_Maya_logo.svg.png" title="Maya" alt="Maya">
+                        </div>
+                        <p>Unreal Engine, Unity, Blender, Maya</p>
+                    </div>
+                    <div class="skill-category">
+                        <strong>WEB :</strong>
+                        <div class="logo-group">
+                            <img src="images/logos/HTML5_logo_and_wordmark.svg.png" title="HTML5" alt="HTML5">
+                            <img src="images/logos/CSS.3.svg.png" title="CSS3" alt="CSS3">
+                            <img src="images/logos/Javascript-shield.svg.png" title="JavaScript" alt="JS">
+                            <img src="images/logos/PHP-logo.svg.png" title="PHP" alt="PHP">
+                            <img src="images/logos/Symfony2.svg.png" title="Symfony" alt="Symfony"
+                                class="invert-bright">
+                            <img src="images/logos/GitHub-logo-500x281.png" title="GitHub" alt="GitHub"
+                                class="invert-bright">
+                        </div>
+                        <p>HTML, CSS, JS, PHP, Symfony, GitHub</p>
+                    </div>
+                    <div class="skill-category">
+                        <strong>AUDIO :</strong>
+                        <div class="logo-group">
+                            <img src="images/logos/protools.png" title="Pro Tools" alt="Pro Tools">
+                            <img src="images/logos/Audacity_Logo_Plain.svg.png" title="Audacity" alt="Audacity">
+                        </div>
+                        <p>Pro Tools, Audacity</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="extra" class="mission-section">
+            <h2 class="section-title">FICHIER : ARCHIVES_PROJETS_HORS_ZONE.LOG</h2>
+            <div class="grid-container">
+                <div class="project-item card">
+                    <h3>PROJET : FNAF SECURITY BREACH MOD</h3>
+                    <p><strong>RÔLE : SCÉNARISTE / LEVEL DESIGNER ASSISTANT</strong></p>
+                    <p>Briefing : "The Remains" - Projet de jeu vidéo. Prototypage du narratif et conceptualisation des
+                        mécaniques de progression.</p>
+                    <div class="video-container">
+                        <iframe width="100%" height="200" src="https://www.youtube.com/embed/4mKODMD6SnU"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="project-item card">
+                    <h3>PROJET : SECRET OF THE MARKETING</h3>
+                    <p><strong>RÔLE : SOCIAL MEDIA MANAGER</strong></p>
+                    <p>Briefing : Gestion du compte Twitter (@FNAFSOTM). Production de trailers, visuels et animation de
+                        la communauté (+5000 followers).</p>
+                    <div class="card-image">
+                        <img src="images/sotm.jfif" alt="Secret of the Marketing"
+                            style="width: 100%; border: 1px solid var(--secondary-color);">
+                    </div>
+                    <a href="https://x.com/FNAFSOTM" class="btn" target="_blank">ACCÉDER AU SIGNAL X</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="illustrations" class="mission-section">
+            <h2 class="section-title">FICHIER : ARCHIVES_ILLUSTRATIONS.DAT</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="images/KIT.png" alt="Illustration KIT"></div>
+                <div class="gallery-item"><img src="images/guinevera.png" alt="Illustration Guinevera"></div>
+                <div class="gallery-item"><img src="images/Jackally2025%20flat%20all.png"
+                        alt="Illustration Jackally 2025"></div>
+                <div class="gallery-item"><img src="images/remainsteaser2.jpg" alt="Teaser Remains"></div>
+            </div>
+        </section>
+
+        <section id="productions-video" class="mission-section">
+            <h2 class="section-title">FICHIER : RUSH_TRAILERS.MP4</h2>
+            <div class="video-production-box">
+                <h3>SECRET OF THE MARKETING (GAMEPLAY & 3D)</h3>
+                <div class="video-grid">
+                    <div class="video-container">
+                        <iframe width="100%" height="200" src="https://www.youtube.com/embed/5nNK4RAfLYk"
+                            title="SOTM Video 1" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-container">
+                        <iframe width="100%" height="200" src="https://www.youtube.com/embed/-kkFzVfpn50"
+                            title="SOTM Video 2" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-container">
+                        <iframe width="100%" height="200" src="https://www.youtube.com/embed/AAsvHwHSlcQ"
+                            title="SOTM Video 3" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="video-production-box" style="margin-top: 2rem;">
+                <h3>EXPÉRIMENTATION ANIMATION 3D</h3>
+                <div class="single-video">
+                    <video controls width="100%">
+                        <source src="videos/Animation_Blender.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="mission-section">
+            <h2 class="section-title">FICHIER : CONTACTER_MOI.INF</h2>
+            <div class="content-box">
+                <p>Besoin d'établir une connexion prioritaire ?</p>
+                <ul class="contact-links">
+                    <li><a href="mailto:tyronejnobaptistejoseph@gmail.com">CRYPTAGE_EMAIL</a></li>
+                    <li><a href="https://www.linkedin.com/in/tyrone-jno-baptiste-b31363178/">SIGNAL_LINKEDIN</a></li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-contacts">
+            <a href="mailto:tyronejnobaptistejoseph@gmail.com"><img src="images/Contacts/Email_Logo_PNG.png" alt="Email"
+                    class="contact-icon"></a>
+            <a href="https://www.linkedin.com/in/tyrone-jno-baptiste-b31363178/" target="_blank"><img
+                    src="images/Contacts/LinkedIn_logo_initials.png.webp" alt="LinkedIn" class="contact-icon"></a>
+        </div>
+        <p>&copy; 2026 UMBRELLA CORP. | TOUS DROITS RÉSERVÉS (OU PRESQUE)</p>
+    </footer>
+
+    <button id="back-to-top" type="button" aria-label="Remonter en haut">↑</button>
+
+    <div id="lightbox-modal" class="modal" aria-hidden="true" role="dialog" aria-label="Aperçu des illustrations">
+        <span class="close-modal" role="button" tabindex="0" aria-label="Fermer">&times;</span>
+        <div class="modal-content">
+            <div class="modal-nav">
+                <button id="prev-btn" class="nav-btn" type="button" aria-label="Image précédente">‹</button>
+                <button id="next-btn" class="nav-btn" type="button" aria-label="Image suivante">›</button>
+            </div>
+            <img id="lightbox-img" src="" alt="">
+        </div>
+    </div>
+
+    <!-- Three.js et Logique App -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+    <script type="module" src="js/app.js"></script>
+</body>
+
+</html>
