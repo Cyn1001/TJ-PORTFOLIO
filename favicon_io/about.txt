@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: Nanum Pen Script
+- Font Author: undefined
+- Font Source: https://fonts.gstatic.com/s/nanumpenscript/v25/daaDSSYiLGqEal3MvdA_FOL_3FkN2z7-aMFCcTU.ttf
+- Font License: undefined)
