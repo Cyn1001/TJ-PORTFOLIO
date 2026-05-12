@@ -740,8 +740,8 @@ footer {
 
 @media (max-width: 768px) {
   #back-to-top {
-    left: 20px;
-    bottom: 85px;
+    left: 50%;
+    bottom: 105px;
   }
 }
 
