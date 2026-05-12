@@ -133,8 +133,14 @@ header {
 }
 
 .contact-icon:hover {
-  filter: sepia(0) brightness(1.2);
+  filter: sepia(1) hue-rotate(-35deg) saturate(6) brightness(1.35)
+    drop-shadow(0 0 8px var(--accent-color));
   transform: scale(1.2);
+}
+
+.contact-icon.invert-bright,
+.contact-icon.invert-bright:hover {
+  filter: invert(1) brightness(1.9) drop-shadow(0 0 8px var(--accent-color));
 }
 
 .footer-contacts {
@@ -176,14 +182,14 @@ header {
 /* Grid & Cards */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
   gap: 2rem;
 }
-
 .card {
   background: rgba(10, 10, 10, 0.9);
   border: 1px solid var(--secondary-color);
   padding: 2rem;
+  min-width: 0;
   transition: all 0.3s ease;
 }
 
@@ -503,18 +509,21 @@ footer {
   }
 
   .side-nav ul {
-    flex-direction: row;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 0;
-    padding: 10px 5px;
+    padding: 6px 4px;
   }
 
   .side-nav a {
     writing-mode: horizontal-tb;
-    font-size: 0.5rem;
-    padding: 10px 2px;
-    letter-spacing: 0.5px;
+    font-size: 0.52rem;
+    line-height: 1.2;
+    padding: 7px 2px;
+    letter-spacing: 0;
     text-align: center;
+    white-space: normal;
+    word-break: break-word;
   }
 
   .main-title {
@@ -524,15 +533,26 @@ footer {
   }
 
   .mission-section {
-    padding: 3rem 1.5rem;
+    padding: 3rem 1rem;
     margin-right: 0;
     border-left: none;
     border-bottom: 1px solid var(--secondary-color);
   }
 
   .grid-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.5rem;
+  }
+
+  .card {
+    padding: 1.25rem;
+  }
+
+  .card h3,
+  .card p,
+  .btn,
+  .section-title {
+    overflow-wrap: anywhere;
   }
 
   .experience-image {
@@ -550,7 +570,7 @@ footer {
   }
 
   footer {
-    padding-bottom: 80px; /* Espace pour la nav mobile */
+    padding-bottom: 105px; /* Espace pour la nav mobile */
   }
 
   #back-to-top {
@@ -559,6 +579,28 @@ footer {
 }
 
 /* Grille de compétences & Logos */
+@media (max-width: 768px) {
+  #back-to-top {
+    bottom: 105px;
+  }
+}
+
+@media (max-width: 420px) {
+  .mission-section {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  .side-nav a {
+    font-size: 0.48rem;
+    padding: 6px 1px;
+  }
+}
+
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -619,7 +661,8 @@ footer {
 }
 
 /* Utilitaires pour logos sombres */
-.invert-bright {
+.invert-bright,
+.logo-group img.invert-bright {
   filter: invert(1) brightness(2) drop-shadow(0 0 2px #000);
 }
 
