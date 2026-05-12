@@ -486,7 +486,7 @@ footer {
 }
 
 /* Responsivité Mobile */
-@media (max-width: 768px) {
+@media (max-width: 780px) {
   .side-nav {
     right: 0;
     top: auto;
