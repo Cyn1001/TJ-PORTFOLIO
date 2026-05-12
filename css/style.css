@@ -586,33 +586,49 @@ footer {
 }
 
 .logo-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(68px, 1fr));
+  gap: 12px;
   margin-bottom: 1rem;
   align-items: center;
 }
 
 .logo-group img {
-  height: 30px;
-  max-width: 60px;
+  width: 100%;
+  max-width: 78px;
+  height: 56px;
+  padding: 7px;
   object-fit: contain;
+  justify-self: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
   filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.1));
-  transition: transform 0.2s ease, filter 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
 .logo-group img:hover {
   transform: scale(1.15);
   filter: drop-shadow(0 0 8px var(--accent-color));
+  border-color: var(--accent-color);
+  background: rgba(188, 0, 0, 0.12);
 }
 
 /* Utilitaires pour logos sombres */
 .invert-bright {
-  filter: invert(1) brightness(2) drop-shadow(0 0 2px #000) !important;
+  filter: invert(1) brightness(2) drop-shadow(0 0 2px #000);
+}
+
+.logo-group img.invert-bright:hover {
+  filter: invert(1) brightness(2.2) drop-shadow(0 0 8px var(--accent-color));
 }
 
 .ue-logo {
-  height: 35px !important;
+  max-width: 86px;
 }
 
 .skill-category p {
@@ -702,6 +718,7 @@ footer {
   aspect-ratio: 1/1;
   cursor: pointer;
   overflow: hidden;
+  outline: none;
 }
 
 .gallery-item img {
@@ -714,6 +731,11 @@ footer {
 
 .gallery-item:hover {
   border-color: var(--accent-color);
+}
+
+.gallery-item:focus-visible {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(188, 0, 0, 0.35);
 }
 
 .gallery-item:hover img {
@@ -736,6 +758,10 @@ footer {
   backdrop-filter: blur(10px);
 }
 
+.modal.is-open {
+  display: block;
+}
+
 .modal-content-container {
   position: relative;
   margin: auto;
@@ -750,7 +776,7 @@ footer {
   margin: auto;
   display: block;
   width: auto;
-  max-width: 100%;
+  max-width: min(100%, calc(100vw - 96px));
   max-height: 80vh;
   border: 1px solid var(--accent-color);
   box-shadow: 0 0 20px rgba(188, 0, 0, 0.3);
@@ -818,6 +844,7 @@ footer {
   -webkit-user-select: none;
   background-color: rgba(0, 0, 0, 0.5);
   border: 1px solid var(--secondary-color);
+  z-index: 2100;
 }
 
 .next-modal {
@@ -838,7 +865,7 @@ footer {
 
 @media only screen and (max-width: 700px) {
   .modal-content {
-    width: 100%;
+    max-width: calc(100vw - 32px);
   }
   .close-modal {
     top: 15px;
