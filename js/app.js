@@ -1,5 +1,3 @@
-import * as THREE from "three";
-
 // --- CONFIGURATION ---
 const CONFIG = {
   glitchIntensity: 0.05,
@@ -10,92 +8,8 @@ const CONFIG = {
   cameraEnd: 200,
 };
 
-// --- THREE.JS SETUP ---
-const container = document.getElementById("canvas-container");
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  2000,
-);
-const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-container.appendChild(renderer.domElement);
-
-// Create Particle System
-const geometry = new THREE.BufferGeometry();
-const vertices = [];
-const originalY = [];
-for (let i = 0; i < CONFIG.particleCount; i++) {
-  const x = THREE.MathUtils.randFloatSpread(1500);
-  const y = THREE.MathUtils.randFloatSpread(1500);
-  const z = THREE.MathUtils.randFloatSpread(2000);
-  vertices.push(x, y, z);
-  originalY.push(y);
-}
-geometry.setAttribute(
-  "position",
-  new THREE.Float32BufferAttribute(vertices, 3),
-);
-
-const material = new THREE.PointsMaterial({
-  color: CONFIG.baseColor,
-  size: 2,
-  transparent: true,
-  opacity: 0.6,
-  blending: THREE.AdditiveBlending,
-});
-
-const points = new THREE.Points(geometry, material);
-scene.add(points);
-
-camera.position.z = CONFIG.cameraStart;
-
-// State Variables
-let mouseX = 0;
-let mouseY = 0;
 let scrollPercent = 0;
 let targetCameraZ = CONFIG.cameraStart;
-
-// Listeners
-window.addEventListener("mousemove", (e) => {
-  mouseX = (e.clientX - window.innerWidth / 2) / window.innerWidth;
-  mouseY = (e.clientY - window.innerHeight / 2) / window.innerHeight;
-});
-
-window.addEventListener("scroll", () => {
-  const h = document.documentElement;
-  const b = document.body;
-  const st = "scrollTop";
-  const sh = "scrollHeight";
-
-  // Scroll progress percentage
-  const maxScroll = (h[sh] || b[sh]) - h.clientHeight || 1;
-  scrollPercent = (h[st] || b[st]) / maxScroll;
-
-  // Update progress bar
-  const progressBar = document.getElementById("scroll-progress-bar");
-  if (progressBar) {
-    progressBar.style.width = scrollPercent * 100 + "%";
-  }
-
-  // Show/hide back to top button with fade
-  const backToTop = document.getElementById("back-to-top");
-  if (backToTop) {
-    if ((h[st] || b[st]) > 800) {
-      backToTop.classList.add("visible");
-    } else {
-      backToTop.classList.remove("visible");
-    }
-  }
-
-  targetCameraZ =
-    CONFIG.cameraStart -
-    scrollPercent * (CONFIG.cameraStart - CONFIG.cameraEnd);
-});
 
 // --- UI INITIALIZATION ---
 function initUI() {
@@ -134,12 +48,10 @@ function initUI() {
     sectionObserver.observe(section);
   });
 
-  // Back to top click
   document.getElementById("back-to-top")?.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
-  // Lightbox Gallery Logic
   initLightbox();
 }
 
@@ -150,69 +62,98 @@ function initLightbox() {
   const closeBtn = document.querySelector(".close-modal");
   const prevBtn = document.querySelector(".prev-modal");
   const nextBtn = document.querySelector(".next-modal");
-  const galleryItems = document.querySelectorAll(".gallery-item img");
+  const galleryItems = Array.from(document.querySelectorAll(".gallery-item img"));
+
+  if (
+    !modal ||
+    !modalImg ||
+    !captionText ||
+    !closeBtn ||
+    !prevBtn ||
+    !nextBtn ||
+    galleryItems.length === 0
+  ) {
+    return;
+  }
 
   let currentIndex = 0;
 
-  if (!modal || galleryItems.length === 0) return;
+  function updateModalImage() {
+    const item = galleryItems[currentIndex];
+    if (!item) return;
+
+    modalImg.src = item.currentSrc || item.src;
+    modalImg.alt = item.alt || "";
+    captionText.innerText = item.alt || "";
+  }
 
   function openModal(index) {
     currentIndex = index;
-    modal.style.display = "block";
     updateModalImage();
-    document.body.style.overflow = "hidden"; // Prevent scroll when modal is open
-  }
-
-  function updateModalImage() {
-    const item = galleryItems[currentIndex];
-    modalImg.src = item.src;
-    captionText.innerText = item.alt;
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    closeBtn.focus();
   }
 
   function closeModal() {
-    modal.style.display = "none";
-    document.body.style.overflow = "auto";
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    modalImg.removeAttribute("src");
+    document.body.style.overflow = "";
   }
 
-  function showNext() {
+  function showNext(event) {
+    event?.preventDefault();
     currentIndex = (currentIndex + 1) % galleryItems.length;
     updateModalImage();
   }
 
-  function showPrev() {
+  function showPrev(event) {
+    event?.preventDefault();
     currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
     updateModalImage();
   }
 
   galleryItems.forEach((item, index) => {
-    item.parentElement.addEventListener("click", () => openModal(index));
+    const trigger = item.closest(".gallery-item");
+    if (!trigger) return;
+
+    trigger.setAttribute("role", "button");
+    trigger.setAttribute("tabindex", "0");
+    trigger.setAttribute("aria-label", `Ouvrir ${item.alt || "illustration"}`);
+    trigger.addEventListener("click", () => openModal(index));
+    trigger.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openModal(index);
+      }
+    });
   });
 
   closeBtn.addEventListener("click", closeModal);
   nextBtn.addEventListener("click", showNext);
   prevBtn.addEventListener("click", showPrev);
 
-  // Close on outside click
-  window.addEventListener("click", (e) => {
-    if (e.target === modal) closeModal();
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) closeModal();
   });
 
-  // Keyboard navigation
-  window.addEventListener("keydown", (e) => {
-    if (modal.style.display === "block") {
-      if (e.key === "Escape") closeModal();
-      if (e.key === "ArrowRight") showNext();
-      if (e.key === "ArrowLeft") showPrev();
-    }
+  window.addEventListener("keydown", (event) => {
+    if (!modal.classList.contains("is-open")) return;
+
+    if (event.key === "Escape") closeModal();
+    if (event.key === "ArrowRight") showNext(event);
+    if (event.key === "ArrowLeft") showPrev(event);
   });
 }
 
-// Typewriter Effect Function
 function startTypewriter(el) {
   el.classList.add("typed");
   const text = el.textContent;
   el.textContent = "";
   el.dataset.text = "";
+
   let i = 0;
   function type() {
     if (i < text.length) {
@@ -222,59 +163,149 @@ function startTypewriter(el) {
       setTimeout(type, 30);
     }
   }
+
   type();
 }
 
-// Window Resize Handling
-window.addEventListener("resize", () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
+function updateScrollState() {
+  const h = document.documentElement;
+  const b = document.body;
+  const scrollTop = h.scrollTop || b.scrollTop;
+  const scrollHeight = h.scrollHeight || b.scrollHeight;
+  const maxScroll = scrollHeight - h.clientHeight || 1;
 
-// Start UI logic
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initUI);
-} else {
+  scrollPercent = scrollTop / maxScroll;
+
+  const progressBar = document.getElementById("scroll-progress-bar");
+  if (progressBar) {
+    progressBar.style.width = `${scrollPercent * 100}%`;
+  }
+
+  const backToTop = document.getElementById("back-to-top");
+  if (backToTop) {
+    backToTop.classList.toggle("visible", scrollTop > 800);
+  }
+
+  targetCameraZ =
+    CONFIG.cameraStart -
+    scrollPercent * (CONFIG.cameraStart - CONFIG.cameraEnd);
+}
+
+function initThreeBackground() {
+  const container = document.getElementById("canvas-container");
+  if (!container) return;
+
+  import("three")
+    .then((THREE) => {
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        2000,
+      );
+      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+
+      const geometry = new THREE.BufferGeometry();
+      const vertices = [];
+      const originalY = [];
+
+      for (let i = 0; i < CONFIG.particleCount; i++) {
+        const x = THREE.MathUtils.randFloatSpread(1500);
+        const y = THREE.MathUtils.randFloatSpread(1500);
+        const z = THREE.MathUtils.randFloatSpread(2000);
+        vertices.push(x, y, z);
+        originalY.push(y);
+      }
+
+      geometry.setAttribute(
+        "position",
+        new THREE.Float32BufferAttribute(vertices, 3),
+      );
+
+      const material = new THREE.PointsMaterial({
+        color: CONFIG.baseColor,
+        size: 2,
+        transparent: true,
+        opacity: 0.6,
+        blending: THREE.AdditiveBlending,
+      });
+
+      const points = new THREE.Points(geometry, material);
+      scene.add(points);
+
+      camera.position.z = CONFIG.cameraStart;
+
+      let mouseX = 0;
+      let mouseY = 0;
+
+      window.addEventListener("mousemove", (event) => {
+        mouseX = (event.clientX - window.innerWidth / 2) / window.innerWidth;
+        mouseY = (event.clientY - window.innerHeight / 2) / window.innerHeight;
+      });
+
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      function animate() {
+        requestAnimationFrame(animate);
+
+        camera.position.z += (targetCameraZ - camera.position.z) * 0.05;
+        camera.position.x += (mouseX * 100 - camera.position.x) * 0.05;
+        camera.position.y += (-mouseY * 100 - camera.position.y) * 0.05;
+        camera.lookAt(0, 0, 0);
+
+        const positions = points.geometry.attributes.position.array;
+        for (let i = 0; i < CONFIG.particleCount; i++) {
+          const i3 = i * 3;
+          positions[i3 + 1] =
+            originalY[i] +
+            Math.sin(Date.now() * 0.001 + i) * (10 + scrollPercent * 50);
+        }
+
+        points.geometry.attributes.position.needsUpdate = true;
+        points.rotation.y += 0.001 + scrollPercent * 0.005;
+
+        if (Math.random() < CONFIG.glitchIntensity + scrollPercent * 0.1) {
+          points.position.x = THREE.MathUtils.randFloatSpread(5);
+          points.position.z = THREE.MathUtils.randFloatSpread(5);
+          material.color.setHex(CONFIG.accentColor);
+          material.size = 4;
+
+          setTimeout(() => {
+            points.position.set(0, 0, 0);
+            material.color.setHex(CONFIG.baseColor);
+            material.size = 2;
+          }, 50);
+        }
+
+        renderer.render(scene, camera);
+      }
+
+      animate();
+    })
+    .catch((error) => {
+      console.warn("Three.js background disabled:", error);
+    });
+}
+
+function startApp() {
   initUI();
+  updateScrollState();
+  initThreeBackground();
 }
 
-// Animation Loop
-function animate() {
-  requestAnimationFrame(animate);
+window.addEventListener("scroll", updateScrollState, { passive: true });
 
-  // Smooth camera movement
-  camera.position.z += (targetCameraZ - camera.position.z) * 0.05;
-  camera.position.x += (mouseX * 100 - camera.position.x) * 0.05;
-  camera.position.y += (-mouseY * 100 - camera.position.y) * 0.05;
-  camera.lookAt(0, 0, 0);
-
-  // Particle behavior
-  const positions = points.geometry.attributes.position.array;
-  for (let i = 0; i < CONFIG.particleCount; i++) {
-    const i3 = i * 3;
-    // Subtle wave effect based on scroll
-    positions[i3 + 1] =
-      originalY[i] +
-      Math.sin(Date.now() * 0.001 + i) * (10 + scrollPercent * 50);
-  }
-  points.geometry.attributes.position.needsUpdate = true;
-  points.rotation.y += 0.001 + scrollPercent * 0.005;
-
-  // Random Glitch Effect
-  if (Math.random() < CONFIG.glitchIntensity + scrollPercent * 0.1) {
-    points.position.x = THREE.MathUtils.randFloatSpread(5);
-    points.position.z = THREE.MathUtils.randFloatSpread(5);
-    material.color.setHex(CONFIG.accentColor);
-    material.size = 4;
-    setTimeout(() => {
-      points.position.set(0, 0, 0);
-      material.color.setHex(CONFIG.baseColor);
-      material.size = 2;
-    }, 50);
-  }
-
-  renderer.render(scene, camera);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", startApp);
+} else {
+  startApp();
 }
-
-animate();
