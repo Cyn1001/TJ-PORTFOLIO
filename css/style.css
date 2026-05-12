@@ -720,6 +720,136 @@ footer {
   filter: grayscale(0) contrast(1.1);
 }
 
+/* Modal Lightbox */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  padding-top: 50px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.modal-content-container {
+  position: relative;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 1200px;
+}
+
+.modal-content {
+  margin: auto;
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 80vh;
+  border: 1px solid var(--accent-color);
+  box-shadow: 0 0 20px rgba(188, 0, 0, 0.3);
+  animation: zoom 0.6s;
+}
+
+#modal-caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: var(--accent-color);
+  padding: 15px 0;
+  font-family: "Typewriter", monospace;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+@keyframes zoom {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.close-modal {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+  cursor: pointer;
+  z-index: 2100;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+  color: var(--accent-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Next & previous buttons */
+.prev-modal,
+.next-modal {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 30px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  -webkit-user-select: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--secondary-color);
+}
+
+.next-modal {
+  right: 20px;
+  border-radius: 3px 0 0 3px;
+}
+
+.prev-modal {
+  left: 20px;
+  border-radius: 3px 0 0 3px;
+}
+
+.prev-modal:hover,
+.next-modal:hover {
+  background-color: var(--accent-color);
+  border-color: #fff;
+}
+
+@media only screen and (max-width: 700px) {
+  .modal-content {
+    width: 100%;
+  }
+  .close-modal {
+    top: 15px;
+    right: 20px;
+    font-size: 30px;
+  }
+  .prev-modal, .next-modal {
+    font-size: 20px;
+    padding: 10px;
+  }
+}
+
 /* Productions Vidéo & Trailers */
 .video-production-box {
   background: rgba(10, 10, 10, 0.5);

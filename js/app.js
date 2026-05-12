@@ -138,6 +138,73 @@ function initUI() {
   document.getElementById("back-to-top")?.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
+
+  // Lightbox Gallery Logic
+  initLightbox();
+}
+
+function initLightbox() {
+  const modal = document.getElementById("lightbox-modal");
+  const modalImg = document.getElementById("img-modal-target");
+  const captionText = document.getElementById("modal-caption");
+  const closeBtn = document.querySelector(".close-modal");
+  const prevBtn = document.querySelector(".prev-modal");
+  const nextBtn = document.querySelector(".next-modal");
+  const galleryItems = document.querySelectorAll(".gallery-item img");
+
+  let currentIndex = 0;
+
+  if (!modal || galleryItems.length === 0) return;
+
+  function openModal(index) {
+    currentIndex = index;
+    modal.style.display = "block";
+    updateModalImage();
+    document.body.style.overflow = "hidden"; // Prevent scroll when modal is open
+  }
+
+  function updateModalImage() {
+    const item = galleryItems[currentIndex];
+    modalImg.src = item.src;
+    captionText.innerText = item.alt;
+  }
+
+  function closeModal() {
+    modal.style.display = "none";
+    document.body.style.overflow = "auto";
+  }
+
+  function showNext() {
+    currentIndex = (currentIndex + 1) % galleryItems.length;
+    updateModalImage();
+  }
+
+  function showPrev() {
+    currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+    updateModalImage();
+  }
+
+  galleryItems.forEach((item, index) => {
+    item.parentElement.addEventListener("click", () => openModal(index));
+  });
+
+  closeBtn.addEventListener("click", closeModal);
+  nextBtn.addEventListener("click", showNext);
+  prevBtn.addEventListener("click", showPrev);
+
+  // Close on outside click
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  // Keyboard navigation
+  window.addEventListener("keydown", (e) => {
+    if (modal.style.display === "block") {
+      if (e.key === "Escape") closeModal();
+      if (e.key === "ArrowRight") showNext();
+      if (e.key === "ArrowLeft") showPrev();
+    }
+  });
 }
 
 // Typewriter Effect Function
